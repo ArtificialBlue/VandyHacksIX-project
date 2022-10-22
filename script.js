@@ -5,6 +5,9 @@ function initMap(){
         mapId: '92cb37b5095a990e'
     });
 
+    //Busiest Ports/Straits
+    
+
     //Name
     //Latitude, Longitude
     //Image URL
@@ -34,17 +37,16 @@ function initMap(){
             }
       });
 
-    }
-    const infowindow = new google.maps.InfoWindow({
-        content: "Test"
-      });
-
-    marker.addListener("click", () => {
-        infowindow.open({
-          anchor: marker,
-          map,
+        const infowindow = new google.maps.InfoWindow({
+            content: currentMarker.name
         });
-      });
+
+        marker.addListener("click", () => {
+            infowindow.open(map, marker);
+    });
+
+    }
+    
     
     
     
