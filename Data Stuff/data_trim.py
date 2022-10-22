@@ -1,8 +1,6 @@
-df = pd.read_csv(".\AIS_2022_01_29.csv", encoding= 'unicode_escape')
+import pandas as pd
 
-#Then use iloc to select the column you want work on (in your case it seems 1st columns)
-
-new_df = df[(df.iloc[:, 10]>=70) & (df.iloc[:, 10]<=79)]
-
-print(new_df)
-
+df = pd.read_csv('AIS_2022_01_29.csv')
+#70-79
+cargoVesselType = df(df['VesselType'] >= 70 and df['VesselType'] <= 79).any(axis=1)
+print(cargoVesselType.head())
