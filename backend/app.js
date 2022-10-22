@@ -8,7 +8,7 @@ const connectDB = require('./database/connect');
 
 const router = require('./routes/mapRoute')
 app.use('/',router)
-
+app
 const port = process.env.PORT || 3000;
 const start = async () => {
   try {
