@@ -1,19 +1,16 @@
-const mysql = require('mysql1');
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password : 'abc123',
-    database: 'testmydb'
-    });
-connection.connect();
-function query(sql, date = ''){
-    connection.query(sql,date,function(err,res,fields){
-        if(err){
-            console.log(err);
-        }else{
-            const result = res;
-            console.log(res);
-        }
-    });
-    return result;
-}
+const mongoose = require('mongoose');
+
+
+const ShipSchema = new mongoose.Schema({
+    ID: {
+      type: Number,
+      required: [true, 'Please provide mmin'],
+      minlength: 3,
+      maxlength: 50,
+    },
+  });
+  
+
+  
+  module.exports = mongoose.model('Ship', ShipSchema);
+  
