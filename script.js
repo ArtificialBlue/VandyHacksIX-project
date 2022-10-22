@@ -35,6 +35,19 @@ function initMap(){
       });
 
     }
+    const infowindow = new google.maps.InfoWindow({
+        content: "Test"
+      });
+
+    marker.addListener("click", () => {
+        infowindow.open({
+          anchor: marker,
+          map,
+        });
+      });
+    
+    
+    
     
     
 }
