@@ -9,6 +9,6 @@ const {
 router.route('/').get(showAllShips);
 
 router
-  .route('/ships').get(showSingleShip);
+  .route('/ships/:id').get(showSingleShip);
 
 module.exports = router;
