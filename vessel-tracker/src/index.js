@@ -7,121 +7,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Accordion from 'react-bootstrap/Accordion';
 
-const _test_data_set = {
-    "ships": [
-        {
-            _id: "6353d22628f789753bffb2e1",
-            VesselName: "ASIAN VISION",
-        },
-        {
-            _id: "6353d22628f789753bffb2e2",
-            VesselName: "CLOVER ACE"
-        },
-        {
-            _id: "6353d22628f789753bffb2e7",
-            VesselName: "HAMBURG BRIDGE"
-        },
-        {
-            _id: "6353d22628f789753bffb2e8",
-            VesselName: "ASIAN VISION"
-        },
-        {
-            _id: "6353d22628f789753bffb2e9",
-            VesselName: "ASIAN VISION"
-        },
-        {
-            _id: "6353d22628f789753bffb2ea",
-            VesselName: "CLOVER ACE"
-        }
-    ]
-};
-
-const _test_loc_points = {
-    "6353d22628f789753bffb2e1": {
-        LAT: 0.0,
-        LON: 0.0
-    },
-    "6353d22628f789753bffb2e2": {
-        LAT: 1.0,
-        LON: 1.0
-    },
-    "6353d22628f789753bffb2e7": {
-        LAT: 2.0,
-        LON: 2.0
-    },
-    "6353d22628f789753bffb2e8": {
-        LAT: 3.0,
-        LON: 3.0
-    },
-    "6353d22628f789753bffb2e9": {
-        LAT: 4.0,
-        LON: 4.0
-    },
-    "6353d22628f789753bffb2ea": {
-        LAT: 5.0,
-        LON: 5.0
-    }
-}
-
-function _get_data_from_id(_id) { // This will later be replaced with an actual database call
-    // console.log("getting data from Id");
-    // console.log(_test_loc_points[String(_id)]);
-    return _test_loc_points[_id];
-}
-
-// function processPoints(dataset, key) { // Sorts a database query containing 
-//     var processedJson = {};
-//     // dataset = JSON.parse(dataset);
-//     console.log(JSON.stringify(dataset));
-
-//     for (var item in dataset[key]) {
-//         if (Object.hasOwnProperty(item)) {
-//             console.log(dataset[key][item].VesselName);
-//             if (processedJson.hasOwnProperty(dataset[key][item].VesselName)) {
-//                 processedJson[dataset[key][item].VesselName].push(dataset[key][item]._id);
-//                 console.log("Added the following:");
-//                 console.log(dataset[key][item].VesselName);
-//                 console.log(dataset[key][item]._id);
-//             } else {
-//                 processedJson[dataset[key][item].VesselName] = [];
-//                 processedJson[dataset[key][item].VesselName].push(dataset[key][item]._id);
-//                 console.log("Added the following:");
-//                 console.log(dataset[key][item].VesselName);
-//                 console.log(dataset[key][item]._id);
-//             }
-//         }
-//     }
-
-//     console.log(JSON.stringify(processedJson));
-//     return processedJson;
-// }
-
-function getPointsFromDataset(dataset) { // Requires a dataset that has already had processPoints() called on it
-    var HTMLObject = null;
-    for (var item in dataset) {
-        // console.log("getPointsFromDataset()");
-        // console.log(dataset[item]);
-        for (var item2 in dataset[item]) {
-            var point = _get_data_from_id(item2);
-            // console.log("point:");
-            // console.log(point);
-            if (HTMLObject == null) {
-                HTMLObject = <LocationLabel
-                    lat={point["LAT"]}
-                    lng={point["LON"]}
-                />
-            } else {
-                HTMLObject = <LocationLabel
-                    lat={point["LAT"]}
-                    lng={point["LON"]}
-                />
-            }
-        }
-    }
-    // console.log(HTMLObject);
-    return (<div dangerouslySetInnerHTML={{ __html: HTMLObject }} />);
-}
-
 function getShipRoutes(dataset) {
     const shipRoutes = new Map();
     for (const item of dataset) {
@@ -132,7 +17,18 @@ function getShipRoutes(dataset) {
         shipRoutes.get(item.VesselName).push({ lat: Number(item.LAT), lng: Number(item.LON) })
         // shipRoutes.get(item.VesselName).sort((a, b) => a.datetime - b.datetime)
     }
-    return shipRoutes
+    return shipRoutes;
+}
+
+function getUniqueShips(dataset) {
+    const uniqueShips = new Map();
+    for (const item of dataset){
+        if (!uniqueShips.has(item.VesselName)) {
+            uniqueShips.set(item.VesselName, []);
+        }
+        uniqueShips.get(item.Vessel).push({ VesselName: item.VesselName, CallSign: item.CallSign})
+    }
+    return uniqueShips;
 }
 
 const LocationLabelStyle = {
@@ -141,6 +37,10 @@ const LocationLabelStyle = {
     backgroundColor: '#ffffff',
     padding: 4,
 };
+
+class SideBar extends React.Component {
+
+}
 
 class LocationLabel extends React.Component {
     constructor(props) {
@@ -162,7 +62,7 @@ function PointCollection(props) {
     // return getPointsFromDataset(this.props.dataset, 'ships');
     var dataset = props.dataset;
     // console.log("Assembling the point collection:");
-    // console.log(dataset);
+    console.log(props.dataset);
     // // dataset = getPointsFromDataset(dataset);
     // console.log("Assembled Data:");
     // console.log(dataset);
@@ -180,6 +80,7 @@ async function showAllShips() {
     return json_data;
 }
 
+// async function 
 
 
 
@@ -193,8 +94,8 @@ export default function SimpleMap(props) {
     };
 
     const points = props.ships.map(item => {
-        // console.log("Item's Info");
-        // console.log(item);
+        console.log("Item's Info");
+        console.log(item);
         // var point = _get_data_from_id(item._id);
         return <LocationLabel
             key={item._id + item.LAT}
@@ -203,6 +104,17 @@ export default function SimpleMap(props) {
             text={item.VesselName}
         />
     });
+
+    const sidebar = <Accordion> 
+        {sidebar = getUniqueShips().map(item => {
+            <Accordion.Header>item.VesselName</Accordion.Header>
+            <Accordion.Body>
+                <ul>
+                    <li>item.</li>
+                </ul>
+            </Accordion.Body>
+        })}
+        </Accordion>
 
     const handleGoogleMapApi = (google) => {
         console.log('api loaded')

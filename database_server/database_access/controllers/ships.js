@@ -6,40 +6,51 @@ const client = new MongoClient('mongodb+srv://vandyproj:VandyHacks9@vandyhacks9.
 const ship = client.db('cargoVesselType');
 
 async function fetchShipNames(limit = 250) {
-  const ships = await ship.collection("cargoVesselType").find({}, { projection: { VesselName: true, LAT: true, LON: true, BaseDateTime: true} }).sort({BaseDateTime: 1, "VesselName": 1}).limit(limit).toArray();
-  const shipWithOnlyIdAndVessel = ships;
-  return shipWithOnlyIdAndVessel;
+    const ships = await ship.collection("cargoVesselType").find({}, { projection: { VesselName: true, LAT: true, LON: true, BaseDateTime: true, CallSign: true } }).sort({ BaseDateTime: 1, "VesselName": 1 }).limit(limit).toArray();
+    const shipWithOnlyIdAndVessel = ships;
+    return shipWithOnlyIdAndVessel;
 }
 
 async function showAllShips(req, res) {
-  const ships = await fetchShipNames(); // this is an array of { _id, vesselName }
-  res.json(ships);
+    const ships = await fetchShipNames(); // this is an array of { _id, vesselName }
+    res.json(ships);
 }
 
-const showSingleShip = async (req, res) => {
-  console.log(req.params.id);
-  const passInId = mongoose.Types.ObjectId(req.params.id);
-  const ships = await ship.collection("cargoVesselType").find({ _id: passInId }, { projection: { LAT: true, LON: true } }).toArray();
-  if (!ships) {
-    console.log('no ships');
-  }
-  const shipWithOnlyIdAndVessel = ships;
-  res.status(StatusCodes.OK).json({ shipWithOnlyIdAndVessel })
+async function showSingleShip(_id) {
+    console.log(req.params.id);
+    const passInId = mongoose.Types.ObjectId(req.params.id);
+    const ships = await ship.collection("cargoVesselType").find({ _id: passInId }, { projection: { LAT: true, LON: true, MMSI: true, CallSign: true, Length: true, Width: true, VesselName: true } }).toArray();
+    if (!ships) {
+        return {}
+    }
+    const shipWithOnlyIdAndVessel = ships;
+    return shipWithOnlyIdAndVessel;
 }
+
+async function getShipById(req, res){
+    const ships = await showSingleShip();
+    res.json(ships);
+}
+
+// const showSingleShip = async (req, res) => {
+//     res.status(StatusCodes.OK).json({ shipWithOnlyIdAndVessel })
+// }
+
+// async function showSingleShip()
 
 const showSingShipAtSpecificTime = async (req, res) => {
-  const passInId = mongoose.Types.ObjectId(req.params.id);
-  const ships = await ship.collection("cargoVesselType").find({ _id: passInId }, { projection: { MMSI: true, Heading: true, CallSign: true, VesselType: true, Length: true, Width: true } }).toArray();
-  if (!ships) {
-    console.log('no ships');
-  }
-  const shipWithOnlyIdAndVessel = ships;
-  res.status(200).json({ shipWithOnlyIdAndVessel });
+    const passInId = mongoose.Types.ObjectId(req.params.id);
+    const ships = await ship.collection("cargoVesselType").find({ _id: passInId }, { projection: { MMSI: true, Heading: true, CallSign: true, VesselType: true, Length: true, Width: true } }).toArray();
+    if (!ships) {
+        console.log('no ships');
+    }
+    const shipWithOnlyIdAndVessel = ships;
+    res.status(200).json({ shipWithOnlyIdAndVessel });
 }
 
 
 module.exports = {
-  showAllShips,
-  showSingleShip,
-  showSingShipAtSpecificTime
+    showAllShips,
+    showSingleShip,
+    showSingShipAtSpecificTime
 }
