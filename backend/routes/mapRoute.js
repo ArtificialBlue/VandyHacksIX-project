@@ -4,12 +4,14 @@ const {
   showAllShips,
   showSingleShip,
   showSingShipAtSpecificTime,
+  randommpg
 } = require('../controllers/ships')
 
 
 router.route('/').get(showAllShips);
 
 router
-  .route('/ships/:id').get(showSingleShip,showSingShipAtSpecificTime);
+  .route('/ships/:id').get(showSingleShip,showSingShipAtSpecificTime,randommpg);
+router.route('/test/:id').get(randommpg);
 
 module.exports = router;

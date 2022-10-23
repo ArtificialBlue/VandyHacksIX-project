@@ -31,9 +31,33 @@ const showSingShipAtSpecificTime = async (req,res) =>{
     res.status(200).json({shipWithOnlyIdAndVessel});
 }
 
+const randommpg=async(req,res)=>{
+  const passInId=mongoose.Types.ObjectId(req.param.id);
+
+  const ships = await ship.collection("cargoVesselType").find({_id:passInId},{projection:{MMSI:true}})
+  if (!ships){
+    console.log('no ships');
+    
+
+
+  }
+  const max=80;
+  const min=60;
+  const mpg=between(max,min)
+  console.log(mpg);
+  res.status(200).json({mpg});
+  
+}
+function between(max, min){
+  return Math.floor(
+    Math.random() * (max-min)+min
+  )
+
+}
 
 module.exports = {
     showAllShips,
     showSingleShip,
-    showSingShipAtSpecificTime
+    showSingShipAtSpecificTime,
+    randommpg
   }
