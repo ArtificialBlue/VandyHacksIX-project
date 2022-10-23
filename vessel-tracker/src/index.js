@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import ReactDom from 'react-dom/client';
 import GoogleMapReact from 'google-map-react';
 
-const cors = require("cors");
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Accordion from 'react-bootstrap/Accordion';
 
 const _test_data_set = {
     "ships": [
@@ -207,20 +206,6 @@ export default function SimpleMap(props) {
 
     const handleGoogleMapApi = (google) => {
         console.log('api loaded')
-        // props.lines.entries().sort();
-        // var sorted_array = [];
-        
-        // const sortBy = (key, direction = 'ascending') => (a,b) => {
-        //     const factor = +(direction === 'ascending') || -1,
-        //     getValue = (object, keys) => keys.split('.').reduce((o,k) => o?.[k], object),
-        //     valueA = getValue(a, key),
-        //     valueB = getValue(b, key);
-
-        //     return factor * (valueA > valueB || -(valueA < valueB));
-        // }
-
-        // props.ships.sort(sortBy('BaseDateTime'));
-        // console.log(props.lines);
 
         for (const [name, path] of props.lines.entries()) {
             // console.log(path)
@@ -237,27 +222,39 @@ export default function SimpleMap(props) {
         }
     }
 
+
+
     return (
         // Important! Always set the container height explicitly
-    // <div style={{ height: '100vh', width: '100%' }}>
-    // <Container>
-    //     <Row>
-    //         <Col xs={9}>
-                <GoogleMapReact
-                    bootstrapURLKeys={{ key: "AIzaSyBn9678Reqir1kGGIKu-s4MPn40SaiEggs" }}
-                    defaultCenter={defaultProps.center}
-                    defaultZoom={defaultProps.zoom}
-                    yesIWantToUseGoogleMapApiInternals
-                    onGoogleApiLoaded={handleGoogleMapApi.bind(this)}
-                >
-                    {points}
-                </GoogleMapReact>
-    //         </Col>
-    //         <Col xs={3}>
-                
-    //         </Col>
-    //     </Row>
-    // </Container>
+        <Container>
+            <Row>
+                <Col xs={8}>
+                    <div style={{ height: '100vh', width: '100%' }}>
+                        <GoogleMapReact
+                            bootstrapURLKeys={{ key: "AIzaSyDtEllmmu44uUXVjuEjrNmrJzS-Ea5hDKc" }}
+                            defaultCenter={defaultProps.center}
+                            defaultZoom={defaultProps.zoom}
+                            yesIWantToUseGoogleMapApiInternals
+                            onGoogleApiLoaded={handleGoogleMapApi.bind(this)}
+                        >
+                            {points}
+                        </GoogleMapReact>
+                    </div>
+                </Col>
+                <Col xs={4}>
+                    <Accordion>
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>Item #1</Accordion.Header>
+                            <Accordion.Body>This will have data eventually</Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1">
+                            <Accordion.Header>Item #2</Accordion.Header>
+                            <Accordion.Body>I promise...</Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>  
+                </Col>
+            </Row>
+        </Container>
     );
 }
 
