@@ -10,4 +10,4 @@
 This is a ship route website that you can query information of vessels and have the route displayed on map.  
 
 ## Project Stack
-Google map, mongoDB
+MERN, HTML/CSS, Google map
