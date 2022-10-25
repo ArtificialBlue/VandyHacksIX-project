@@ -7,7 +7,7 @@
 * Cecilia Fu
 
 ## Project Information
-TBD
+This is a ship route website that you can query information of vessels and have the route displayed on map.  
 
 ## Project Stack
-TBD
+Google map, mongoDB
